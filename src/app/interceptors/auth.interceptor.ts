@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpClient } from '@angular/common/http';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpErrorResponse,
+  HttpClient
+} from '@angular/common/http';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
-import { Router } from '@angular/router'; // Import the Router module
-
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   static accessToken: string = '';
-  private refresh: boolean = false;
+  private refresh: boolean = false; // Define the 'refresh' property here
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     console.log('Intercepting request...');
@@ -21,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
     });
 
     return next.handle(req).pipe(catchError((err: HttpErrorResponse) => {
-      if (err.status === 401 && !this.refresh) {
+      if (err.status === 401 && !this.refresh) { // Use 'this.refresh' to access the property
         this.refresh = true;
 
         // Make a request to refresh the access token
@@ -41,12 +46,6 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(newRequest);
           })
         );
-      }
-
-      // If the user is not authenticated (for example, a 401 response), navigate to the login page and display an alert
-      if (err.status === 401) {
-        this.router.navigate(['/login']); // Navigate to the login page
-        window.alert('You are not authenticated. Please log in to access this page.');
       }
 
       return throwError(() => err);

@@ -36,7 +36,6 @@ export class HeaderdashboardempComponent implements OnInit {
   
     // Make the logout request with the refresh token as a request parameter
     this.http.post('http://localhost:9001/logoutEmployer', null, {
-      params: { refreshToken: refreshToken },
       responseType: 'text' // Specify the response type as 'text'
     }).subscribe({
       next: (response: string) => {
@@ -47,10 +46,7 @@ export class HeaderdashboardempComponent implements OnInit {
           // Handle the successful logout response
           console.log('Logout successful');
   
-          // Clear cookies
-          this.cookie.delete('emp');
-          this.cookie.delete('accessToken');
-          this.cookie.delete("refreshToken");
+        
           // Navigate to the employer login page or any other desired route
           this.router.navigate(['/employer']);
         } else {

@@ -38,7 +38,6 @@ export class HeaderuserComponent implements OnInit {
   
     // Make the logout request with the refresh token as a request parameter
     this.http.post('http://localhost:9001/logout', null, {
-      params: { refreshToken: refreshToken },
       responseType: 'text' // Specify the response type as 'text'
     }).subscribe({
       next: (response: string) => {
@@ -49,10 +48,7 @@ export class HeaderuserComponent implements OnInit {
           // Handle the successful logout response
           console.log('Logout successful');
           
-          // Clear cookies
-          this.cookie.delete('uid');
-          this.cookie.delete('accessToken');
-          this.cookie.delete('refreshToken');
+        
           alert("LogOut Successfull");
           // Navigate to the login page or any other desired route
           this.router.navigate(['/login']);
