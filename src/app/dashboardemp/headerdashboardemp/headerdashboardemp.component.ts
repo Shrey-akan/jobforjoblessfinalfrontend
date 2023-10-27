@@ -46,7 +46,7 @@ export class HeaderdashboardempComponent implements OnInit {
           // Handle the successful logout response
           console.log('Logout successful');
   
-        
+          alert('Logout successful');
           // Navigate to the employer login page or any other desired route
           this.router.navigate(['/employer']);
         } else {
